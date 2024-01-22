@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.shape {
+clip-path: polygon(0 0, 100% 0, 100% 100%, 0 74%);
+background-color: #01A1E4;
+padding: 230px;
+padding-left: 360px;
+position: absolute;
+
+
+}

@@ -1,1 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = {
+};
+
+const appSlice = createSlice({
+  name: 'app',
+  initialState,
+  reducers: {
+  },
+});
+
+export const { actions, reducer } = appSlice;
+export default appSlice.reducer;
