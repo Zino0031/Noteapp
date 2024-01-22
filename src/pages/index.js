@@ -8,7 +8,7 @@ const Index = () => {
         <div className='hidden md:block -mt-20 mb-10 text-center font-semibold'>
         Noteline is an application that allows teachers and students to capture meaningful moments (“notes”) on a timeline, especially in a classroom setting where the teacher wants to get student feedback and the students want an easy way to communicate with the teacher and track interesting moments during the presentation
         </div>
-        <Link href="/join">
+        <Link href="/attend">
           <div className='bg-[#01A1E4] text-white py-4 px-40 mb-4 rounded-md  '>Join as a guest</div>
         </Link>
         <div className='flex flex-row gap-2'>
