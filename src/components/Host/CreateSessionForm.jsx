@@ -55,7 +55,6 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
         ...sessionData,
         code,
         pin,
-        host: true,
         selectedButtons: buttonsToDispatch,
       };
 

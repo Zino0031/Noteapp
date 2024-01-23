@@ -74,8 +74,9 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
   
   
       const participantInfo = {
-  
+
         guestId: generateGuestId(),
+        isHost:true,
      
       };
       return { sessionId: sessionDoc.id, participant: participantInfo, ...sessionData };
@@ -115,6 +116,29 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
       throw error;
     }
   });
+
+  export const sendMessage = createAsyncThunk('app/sendMessage', async ({ sessionId, sender, text }) => {
+    try {
+      const messagesCollection = collection(db, `sessions/${sessionId}/messages`);
+  
+      await addDoc(messagesCollection, {
+        sender,
+        text,
+        timestamp: serverTimestamp(),
+      });
+    } catch (error) {
+      throw error;
+    }
+  });
+  
+  export const incrementCounter = createAsyncThunk('app/incrementCounter', async ({ sessionId }) => {
+    try {
+      dispatch(incrementCounterLocally({ sessionId }));
+    } catch (error) {
+      throw error;
+    }
+  });
+  
   
 
   const generateGuestId = () => {
@@ -124,8 +148,11 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
 
 const initialState = {
     sessions: [],
+    messages: [],
+    counters: {},
     loading: false,
     error: null,
+    isHost:false,
 };
 
 const appSlice = createSlice({
@@ -134,6 +161,9 @@ const appSlice = createSlice({
   reducers: {
     setHost: (state, action) => {
         state.isHost = action.payload;
+      },
+      setMessages: (state, action) => {
+        state.messages = action.payload;
       },
   },
   extraReducers: (builder) => {
@@ -178,8 +208,17 @@ const appSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       });
+      builder.addCase(sendMessage.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sessions.push(action.payload);
+      })
+   .addCase(sendMessage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   }
 });
 
 export const { actions, reducer } = appSlice;
+export const { setMessages  } = appSlice.actions;
 export default appSlice.reducer;
