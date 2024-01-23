@@ -1,0 +1,154 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createSession } from '@/redux/appSlice';
+import PreviewModal from './PreviewModal';
+import ButtonList from './ButtonList';
+
+const CreateSessionForm = ({ setShowCreateSession }) => {
+  const dispatch = useDispatch();
+  const [selectedButtonList, setSelectedButtonList] = useState('standardButtons');
+  const [sessionData, setSessionData] = useState({
+    name: '',
+    description: '',
+    selectedButtons: [],
+  });
+  const [previewData, setPreviewData] = useState(null);
+  const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
+
+  const handleButtonClick = (action) => {
+    if (selectedButtonList === 'standardButtons') {
+      setSessionData({
+        ...sessionData,
+        selectedButtons: ['Question', `I'm lost`, 'Aha!', 'Reference', 'Comment'],
+      });
+      return;
+    }
+
+    const updatedButtons = sessionData.selectedButtons.includes(action)
+      ? sessionData.selectedButtons.filter((btn) => btn !== action)
+      : [...sessionData.selectedButtons, action];
+
+    setSessionData({
+      ...sessionData,
+      selectedButtons: updatedButtons,
+    });
+  };
+
+  const handleCreateSession = async () => {
+    try {
+      const code = generateCode();
+      const pin = generatePin();
+
+      const buttonsToDispatch =
+        selectedButtonList === 'standardButtons'
+          ? ['Question', `I'm lost`, 'Aha!', 'Reference', 'Comment']
+          : sessionData.selectedButtons;
+
+      const previewData = {
+        ...sessionData,
+        code,
+        pin,
+        host: true,
+        selectedButtons: buttonsToDispatch,
+      };
+
+      setPreviewData(previewData);
+      setPreviewModalOpen(true);
+    } catch (error) {
+      console.error('Error creating session:', error.message);
+    }
+  };
+
+  const handleEditSession = () => {
+    setPreviewModalOpen(false);
+  };
+
+  const handleConfirmCreate = async () => {
+    await dispatch(createSession(previewData));
+    setPreviewModalOpen(false);
+    setShowCreateSession(false)
+    setSessionData({
+      name: '',
+      description: '',
+      selectedButtons: [],
+    });
+  };
+
+  const generateCode = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    const codeLength = 6;
+    let code = '';
+    for (let i = 0; i < codeLength; i++) {
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return code;
+  };
+
+  const generatePin = () => {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  };
+
+  return (
+    <div className="max-w-md mx-auto mt-8 p-6 ">
+      <label className="block mb-4">
+
+        <input
+          type="text"
+          placeholder='Name your session'
+          value={sessionData.name}
+          onChange={(e) => setSessionData({ ...sessionData, name: e.target.value })}
+          className="block w-full mt-1 p-2 border rounded-md"
+        />
+      </label>
+      <label className="block mb-4">
+        <textarea
+          placeholder='describe your session'
+          value={sessionData.description}
+          onChange={(e) => setSessionData({ ...sessionData, description: e.target.value })}
+          className="block w-full mt-1 p-2 border rounded-md"
+        />
+      </label>
+
+      <label className="block mb-4">
+        <select
+          value={selectedButtonList}
+          onChange={(e) => {
+            setSelectedButtonList(e.target.value);
+            setSessionData({
+              ...sessionData,
+              [e.target.value]: [],
+            });
+          }}
+          className="block w-full mt-1 p-2 border rounded-md"
+        >
+          <option value="standardButtons">noteline standard buttons</option>
+          <option value="favoriteButtons">my favorite 3 buttons</option>
+        </select>
+      </label>
+
+      <ButtonList
+        selectedButtonList={selectedButtonList}
+        handleButtonClick={handleButtonClick}
+      />
+<div className='justify-center items-center flex'>
+
+      <button
+        onClick={handleCreateSession}
+        className=" mt-4 p-2 bg-[#01A1E4] text-white rounded-md cursor-pointer hover:bg-[#1184b6]"
+        >
+       Preview Session
+      </button>
+          </div>
+
+      {isPreviewModalOpen && (
+        <PreviewModal
+          previewData={previewData}
+          handleEditSession={handleEditSession}
+          handleConfirmCreate={handleConfirmCreate}
+        />
+      )}
+    </div>
+  );
+};
+
+export default CreateSessionForm;
