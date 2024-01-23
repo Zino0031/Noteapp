@@ -19,6 +19,76 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
     }
   });
 
+  export const HostSession = createAsyncThunk('app/HostSession', async ({ code, pin }) => {
+    try {
+      console.log('Joining session with code:', code);
+  
+      const sessionsCollection = collection(db, 'sessions');
+      const querySnapshot = await getDocs(query(sessionsCollection, where('code', '==', code)));
+  
+      if (querySnapshot.size === 0) {
+        throw new Error('Session not found with the provided code.');
+      }
+  
+      const sessionDoc = querySnapshot.docs[0];
+  
+      if (!sessionDoc) {
+        throw new Error('Session document is null.');
+      }
+  
+      const sessionData = sessionDoc.data();
+  
+      if (sessionData.pin !== pin) {
+        throw new Error('Invalid pin for the session.');
+      }
+      
+      const participantInfo = {
+  
+        guestId: generateGuestId(),
+        isHost:true,
+     
+      };
+      return { sessionId: sessionDoc.id, participant: participantInfo, ...sessionData };
+    } catch (error) {
+      throw error;
+    }
+  });
+  export const HosturSession = createAsyncThunk('app/HosturSession', async ({ code }) => {
+    
+    try {
+      
+      const sessionsCollection = collection(db, 'sessions');
+      const querySnapshot = await getDocs(query(sessionsCollection, where('code', '==', code)));
+  
+      if (querySnapshot.size === 0) {
+        throw new Error('Session not found with the provided code.');
+      }
+  
+      const sessionDoc = querySnapshot.docs[0];
+  
+      if (!sessionDoc) {
+        throw new Error('Session document is null.');
+      }
+  
+      const sessionData = sessionDoc.data();
+  
+  
+      const participantInfo = {
+  
+        guestId: generateGuestId(),
+     
+      };
+      return { sessionId: sessionDoc.id, participant: participantInfo, ...sessionData };
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  const generateGuestId = () => {
+
+    return `guest_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  };
+
 const initialState = {
     sessions: [],
     loading: false,
@@ -46,6 +116,24 @@ const appSlice = createSlice({
         state.isHost = action.payload.host || false;
       })
       .addCase(createSession.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+      builder
+      .addCase(HostSession.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sessions.push(action.payload); 
+        state.isHost = true;
+      }).addCase(HostSession.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+      builder
+      .addCase(HosturSession.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sessions.push(action.payload); 
+        state.isHost = true;
+      }).addCase(HosturSession.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
