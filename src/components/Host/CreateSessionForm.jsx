@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { createSession } from '@/redux/appSlice';
 import PreviewModal from './PreviewModal';
 import ButtonList from './ButtonList';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateSessionForm = ({ setShowCreateSession }) => {
   const dispatch = useDispatch();
@@ -14,7 +16,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
   });
   const [previewData, setPreviewData] = useState(null);
   const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
-
+  const [formError, setFormError] = useState('');
   const handleButtonClick = (action) => {
     if (selectedButtonList === 'standardButtons') {
       setSessionData({
@@ -23,6 +25,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
       });
       return;
     }
+   
 
     const updatedButtons = sessionData.selectedButtons.includes(action)
       ? sessionData.selectedButtons.filter((btn) => btn !== action)
@@ -33,9 +36,13 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
       selectedButtons: updatedButtons,
     });
   };
-
+  const isFormValid = sessionData.name.trim() !== '' && sessionData.description.trim() !== '';
   const handleCreateSession = async () => {
     try {
+      if (!isFormValid) {
+        toast.error('Please fill out all the required fields.');
+        return;
+      }
       const code = generateCode();
       const pin = generatePin();
 
@@ -54,6 +61,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
 
       setPreviewData(previewData);
       setPreviewModalOpen(true);
+      setFormError('');
     } catch (error) {
       console.error('Error creating session:', error.message);
     }
@@ -94,6 +102,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
 
         <input
           type="text"
+          required
           placeholder='Name your session'
           value={sessionData.name}
           onChange={(e) => setSessionData({ ...sessionData, name: e.target.value })}
@@ -103,6 +112,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
       <label className="block mb-4">
         <textarea
           placeholder='describe your session'
+          required
           value={sessionData.description}
           onChange={(e) => setSessionData({ ...sessionData, description: e.target.value })}
           className="block w-full mt-1 p-2 border rounded-md"
@@ -130,14 +140,16 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
         selectedButtonList={selectedButtonList}
         handleButtonClick={handleButtonClick}
       />
-<div className='justify-center items-center flex'>
+<div className='justify-center items-center flex flex-col'>
 
       <button
         onClick={handleCreateSession}
+      
         className=" mt-4 p-2 bg-[#01A1E4] text-white rounded-md cursor-pointer hover:bg-[#1184b6]"
         >
        Preview Session
       </button>
+      <ToastContainer />
           </div>
 
       {isPreviewModalOpen && (

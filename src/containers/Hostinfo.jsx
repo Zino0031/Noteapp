@@ -14,7 +14,7 @@ const Hostinfo = () => {
       <h1 className="font-bold">{selectedSession.name}</h1>
       <p className="font-semibold mt-2  max-w-[500px] break-words">{selectedSession.description}</p>
       <div className='text-start'>
-      <p className="text-red-500 mt-4 mb-4">Your session has been created</p>
+      <p className="text-green-500 mt-4 mb-4">Your session has been created</p>
       <p className="mt-2">Join with Code: {selectedSession.code}</p>
       <p className="mt-2 mb-4">Host with Pin: {selectedSession.pin}</p>
       </div>
