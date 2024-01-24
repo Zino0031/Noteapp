@@ -1,0 +1,15 @@
+{
+    "hostOneSession": "استضيف إحدى جلساتك",
+    "hostAnotherSession": "استضيف جلسة أخرى",
+    "newSession": "جلسة جديدة",
+    "sessionCodePlaceholder": "الرمز",
+    "sessionPinPlaceholder": "الرقم السري",
+    "hostButtonLabel": "استضافة",
+    "selectSession": "اختر جلسة",
+    "namePlaceholder": "اسم الجلسة",
+    "descriptionPlaceholder": "وصف الجلسة",
+    "standardButtons": "أزرار نوتلاين القياسية",
+    "favoriteButtons": " من أزراري المفضلة",
+    "previewSessionButton": "معاينة الجلسة"
+   
+  }
