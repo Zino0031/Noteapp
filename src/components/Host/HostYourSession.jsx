@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HosturSession } from '@/redux/appSlice';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const HostYourSession = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { t } = useTranslation('host');
 
   const [sessionInfo, setSessionInfo] = useState({
     code: '',
@@ -41,7 +43,7 @@ const HostYourSession = () => {
             onChange={(e) => setSessionInfo({ ...sessionInfo, code: e.target.value })}
             className="block w-60 mt-2 p-2 border rounded-md"
           >
-            <option value="">Select a Session</option>
+            <option value="">{t('selectSession')}</option>
             {sessions.map((session) => (
               <option key={session.sessionId} value={session.code}>
                 {session.name}
@@ -55,7 +57,7 @@ const HostYourSession = () => {
             onClick={handleHostSession}
             className=" bg-[#01A1E4] hover:border-[#01A1E4] text-white px-10 py-3 rounded-md"
           >
-            Host
+            {t('hostButtonLabel')}
           </button>
         </div>
       </div>

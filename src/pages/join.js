@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { joinSession } from '@/redux/appSlice';
 import { useRouter } from 'next/router'; 
+import { useTranslation } from 'react-i18next';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Join = () => {
+  const { t } = useTranslation('join');
+
   const dispatch = useDispatch();
   const router = useRouter(); 
   
@@ -46,7 +50,7 @@ const Join = () => {
           <img className='w-80' src="/join.svg" alt="join" />
         </div>
       <label>
-        Session Code:
+      {t('sessionCodePlaceholder')}:
         <input
           type="text"
           placeholder='CVCVC'
@@ -57,7 +61,7 @@ const Join = () => {
       </label>
       <button
        className=" bg-[#01A1E4] hover:border-[#01A1E4] text-white px-4 py-3 rounded-md   "
-       onClick={handleJoinSession}>Join</button>
+       onClick={handleJoinSession}>{t('joinButtonLabel')}</button>
      
   
       </div>
@@ -68,3 +72,12 @@ const Join = () => {
 };
 
 export default Join;
+
+
+export async function getStaticProps({ locale }) {
+  return {
+      props: {
+          ...(await serverSideTranslations(locale, ["join"])),
+      },
+  };
+}

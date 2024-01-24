@@ -1,0 +1,17 @@
+{
+    "hostOneSession": "Host one of your sessions",
+    "hostAnotherSession": "Host another session",
+    "newSession": "New Session",
+    "sessionCodePlaceholder": "Code",
+    "sessionPinPlaceholder": "Pin",
+    "hostButtonLabel": "Host",
+    "selectSession": "Select a Session",
+    "namePlaceholder": "Name your session",
+    "descriptionPlaceholder": "Describe your session",
+    "standardButtons": "Noteline standard buttons",
+    "favoriteButtons": "My favorite buttons",
+    "previewSessionButton": "Preview Session"
+    
+  }
+
+

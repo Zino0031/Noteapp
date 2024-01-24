@@ -5,8 +5,11 @@ import PreviewModal from './PreviewModal';
 import ButtonList from './ButtonList';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
 
 const CreateSessionForm = ({ setShowCreateSession }) => {
+  const { t } = useTranslation('host');
+
   const dispatch = useDispatch();
   const [selectedButtonList, setSelectedButtonList] = useState('standardButtons');
   const [sessionData, setSessionData] = useState({
@@ -102,7 +105,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
         <input
           type="text"
           required
-          placeholder='Name your session'
+          placeholder={t('namePlaceholder')}
           value={sessionData.name}
           onChange={(e) => setSessionData({ ...sessionData, name: e.target.value })}
           className="block w-full mt-1 p-2 border rounded-md"
@@ -110,7 +113,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
       </label>
       <label className="block mb-4">
         <textarea
-          placeholder='describe your session'
+          placeholder={t('descriptionPlaceholder')}
           required
           value={sessionData.description}
           onChange={(e) => setSessionData({ ...sessionData, description: e.target.value })}
@@ -130,8 +133,8 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
           }}
           className="block w-full mt-1 p-2 border rounded-md"
         >
-          <option value="standardButtons">noteline standard buttons</option>
-          <option value="favoriteButtons">my favorite 3 buttons</option>
+          <option value="standardButtons">{t('standardButtons')}</option>
+          <option value="favoriteButtons">{t('favoriteButtons')}</option>
         </select>
       </label>
 
@@ -146,7 +149,7 @@ const CreateSessionForm = ({ setShowCreateSession }) => {
       
         className=" mt-4 p-2 bg-[#01A1E4] text-white rounded-md cursor-pointer hover:bg-[#1184b6]"
         >
-       Preview Session
+      {t('previewSessionButton')}
       </button>
       <ToastContainer />
           </div>

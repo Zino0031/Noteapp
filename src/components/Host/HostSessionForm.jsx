@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { HostSession } from '@/redux/appSlice';
 import { useRouter } from 'next/router'; 
-
+import { useTranslation } from 'react-i18next';
 const HostSessionForm = () => {
+  const { t } = useTranslation('host');
+
   const dispatch = useDispatch();
   const router = useRouter(); 
   
@@ -35,7 +37,7 @@ const HostSessionForm = () => {
         <label className="mb-2">
           <input
             type="text"
-            placeholder='Code'
+            placeholder={t('sessionCodePlaceholder')}
             value={sessionInfo.code}
             onChange={(e) => setSessionInfo({ ...sessionInfo, code: e.target.value })}
             className="block w-full mt-2 p-2 border rounded-md"
@@ -48,7 +50,7 @@ const HostSessionForm = () => {
           <input
             type="text"
             value={sessionInfo.pin}
-            placeholder='Pin'
+            placeholder={t('sessionPinPlaceholder')}
             onChange={(e) => setSessionInfo({ ...sessionInfo, pin: e.target.value })}
             className="block w-full mt-2 p-2 border rounded-md"
           />
@@ -57,7 +59,7 @@ const HostSessionForm = () => {
           onClick={handleHostSession}
           className=" bg-[#01A1E4] hover:border-[#01A1E4] text-white px-4 py-3 rounded-md   "
         >
-         Host
+        {t('hostButtonLabel')}
         </button>
             </div>
       </div>
