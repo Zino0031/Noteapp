@@ -7,22 +7,26 @@ import { db } from '@/utils/firebase';
 const currentUser = getAuth().currentUser;
 
 export const createSession = createAsyncThunk('app/createSession', async (sessionData) => {
-    try {
-      console.log('Creating session with payload:', sessionData);
-  
-      const sessionsCollection = collection(db, 'sessions');
-      const sessionRef = await addDoc(sessionsCollection, sessionData); 
-  
-      return { sessionId: sessionRef.id, ...sessionData };
-    } catch (error) {
-      throw error;
-    }
-  });
+  try {
 
-  export const HostSession = createAsyncThunk('app/HostSession', async ({ code, pin }) => {
+    const sessionsCollection = collection(db, 'sessions');
+    const sessionRef = await addDoc(sessionsCollection, sessionData);
+
+    const participantDocRef = await addDoc(collection(sessionRef, 'participants'), {
+  
+    });
+
+    return { sessionId: sessionRef.id, participantId: participantDocRef.id, ...sessionData };
+  } catch (error) {
+    throw error;
+  }
+});
+
+
+  export const HostSession = createAsyncThunk('app/HostSession', async ({ code, pin },thunkAPI) => {
     try {
      
-  
+      const { dispatch } = thunkAPI;
       const sessionsCollection = collection(db, 'sessions');
       const querySnapshot = await getDocs(query(sessionsCollection, where('code', '==', code)));
   
@@ -48,15 +52,16 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
         isHost:true,
      
       };
+      dispatch(setGuestId(participantInfo.guestId));
       return { sessionId: sessionDoc.id, participant: participantInfo, ...sessionData };
     } catch (error) {
       throw error;
     }
   });
-  export const HosturSession = createAsyncThunk('app/HosturSession', async ({ code }) => {
+  export const HosturSession = createAsyncThunk('app/HosturSession', async ({ code },thunkAPI) => {
     
     try {
-      
+      const { dispatch } = thunkAPI;
       const sessionsCollection = collection(db, 'sessions');
       const querySnapshot = await getDocs(query(sessionsCollection, where('code', '==', code)));
   
@@ -79,15 +84,16 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
         isHost:true,
      
       };
+      dispatch(setGuestId(participantInfo.guestId));
       return { sessionId: sessionDoc.id, participant: participantInfo, ...sessionData };
     } catch (error) {
       throw error;
     }
   });
 
-  export const joinSession = createAsyncThunk('app/joinSession', async ({ code }) => {
+  export const joinSession = createAsyncThunk('app/joinSession', async ({ code }, thunkAPI) => {
     try {
-      console.log('Joining session with code:', code);
+      const { dispatch } = thunkAPI;
   
       const sessionsCollection = collection(db, 'sessions');
       const querySnapshot = await getDocs(query(sessionsCollection, where('code', '==', code)));
@@ -111,6 +117,9 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
         isHost: false,
      
       };
+
+      dispatch(setGuestId(participantInfo.guestId));
+
       return { sessionId: sessionDoc.id, participant: participantInfo, ...sessionData };
     } catch (error) {
       throw error;
@@ -152,6 +161,7 @@ const initialState = {
     counters: {},
     loading: false,
     error: null,
+    guestId: null,
     isHost:false,
 };
 
@@ -165,6 +175,9 @@ const appSlice = createSlice({
       setMessages: (state, action) => {
         state.messages = action.payload;
       },
+       setGuestId: (state, action) => {
+      state.guestId = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -186,6 +199,7 @@ const appSlice = createSlice({
         state.loading = false;
         state.sessions.push(action.payload); 
         state.isHost = true;
+        state.guestId = action.payload.participant.guestId;
       }).addCase(HostSession.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
@@ -195,6 +209,7 @@ const appSlice = createSlice({
         state.loading = false;
         state.sessions.push(action.payload); 
         state.isHost = true;
+        state.guestId = action.payload.participant.guestId;
       }).addCase(HosturSession.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
@@ -204,6 +219,7 @@ const appSlice = createSlice({
         state.loading = false;
         state.isHost = false;
         state.sessions.push(action.payload); 
+        state.guestId = action.payload.participant.guestId;
       }).addCase(joinSession.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
@@ -220,5 +236,5 @@ const appSlice = createSlice({
 });
 
 export const { actions, reducer } = appSlice;
-export const { setMessages  } = appSlice.actions;
+export const { setMessages ,setGuestId  } = appSlice.actions;
 export default appSlice.reducer;

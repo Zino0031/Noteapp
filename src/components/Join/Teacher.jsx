@@ -37,7 +37,10 @@ return (
   {messages.map((message) => (
     <div key={message.id} className="relative pl-10 mt-2">
       <div className="absolute top-0 left-0 mt-1 ">
-        <p className="bg-white text-[#01A1E4] font-bold">{message.temp? message.temp.slice(0, 5) : new Date(message.timestamp?.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+        <p className="bg-white text-[#01A1E4] font-bold">
+        {typeof message.temp === 'string' ? message.temp.slice(0, 5) : new Date(message.timestamp?.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+
+        </p>
       </div>
       <div className="ml-4 font-bold text-xl ">
         {message.type || message.action} 

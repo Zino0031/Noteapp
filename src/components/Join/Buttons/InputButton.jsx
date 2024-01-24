@@ -26,7 +26,7 @@ const InputButton = ({type}) => {
             text: newMessage,
             type: type,
             sender: 'Guest', 
-            temp:SelectedTime,
+            temp:SelectedTime.toLocaleTimeString(),
             timestamp: serverTimestamp(),
             counter: 1,
         });

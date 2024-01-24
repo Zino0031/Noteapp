@@ -20,7 +20,7 @@ const Join = () => {
       
         const joinedSession = resultAction.payload;
 
-        console.log('User joined session:', joinedSession);
+        
 
         router.push(`/sessions/${joinedSession.code}`); 
 
