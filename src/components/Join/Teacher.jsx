@@ -15,7 +15,9 @@ const { id } = router.query;
 const messages = useSelector((state) => state.messages); 
  
 
-
+const endSessionHandler = () => {
+  router.push(`/sessions/${id}/details`);
+};
 
 useEffect(() => {
     const messagesCollection = collection(db, `sessions/${id}/messages`);
@@ -54,6 +56,7 @@ return (
 </div>
   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-8">
     <button
+    onClick={endSessionHandler}
       className="bg-[#01A1E4] hover:border-[#01A1E4] text-white px-20 py-3 rounded-md"
     >
       End Session

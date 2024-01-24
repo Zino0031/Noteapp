@@ -162,9 +162,9 @@ const SessionPage = () => {
     <div className="min-h-screen flex flex-col  mx-10 justify-center ">
       <div className='flex flex-col justify-center items-center' >
     <h1 className='font-bold text-2xl -mt-10'>{session.name}</h1>
-    <p className='font-semibold text-lg mb-5 max-w-[300px] break-words'>{session.description}</p>
+    <p className='font-semibold text-lg mb-2 max-w-[300px] break-words'>{session.description}</p>
     <p className="font-semibold text-lg flex gap-3"> 
-    <div className='text-green-600 text-3xl'>
+    <div className='text-green-600 text-3xl mb-2'>
       <FaUsers /> 
       </div>
       {connectedUsers} Users connected </p>
