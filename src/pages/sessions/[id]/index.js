@@ -7,6 +7,7 @@ import { db, database } from '@/utils/firebase';
 import { collection, getDocs, addDoc, doc, deleteDoc, query, where, set,setDoc  } from 'firebase/firestore';
 import { ref, onValue, off } from 'firebase/database';
 import { FaUsers } from "react-icons/fa6";
+import { useSwipeable } from 'react-swipeable';
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -148,6 +149,15 @@ const SessionPage = () => {
   }, [id]);
   const currentUserId = guestId
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+        router.push(`/sessions/${id}/details`);
+      },
+      onSwipedRight: () => {
+        router.push('/join');
+      },
+  });
+
   useInterval(() => {
     updateConnectedUsers();
     addParticipant(currentUserId);
@@ -159,7 +169,7 @@ const SessionPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col  mx-10 justify-center ">
+    <div {...handlers} className="min-h-screen flex flex-col  mx-10 justify-center ">
       <div className='flex flex-col justify-center items-center' >
     <h1 className='font-bold text-2xl -mt-10'>{session.name}</h1>
     <p className='font-semibold text-lg mb-2 max-w-[300px] break-words'>{session.description}</p>
