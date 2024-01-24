@@ -111,8 +111,6 @@ const details = () => {
             </div> 
       </div>
 
-    
-
   );
 };
 
