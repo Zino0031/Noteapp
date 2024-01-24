@@ -30,7 +30,7 @@ const LanguageSwitcher = () => {
       <div>
         <button
           type="button"
-          className="flex items-center space-x-2 text-white font-semibold focus:outline-none  mt-10 bg-red-500  px-4 py-1 rounded-md "
+          className="flex items-center space-x-2 text-black font-semibold focus:outline-none  mt-10 bg-red-500  px-4 py-1 rounded-md "
           onClick={handleDropdownToggle}
         >
           <span>{selectedLanguage === "en" ? "English" : "العربية"}</span>
@@ -38,7 +38,7 @@ const LanguageSwitcher = () => {
       </div>
 
       {isOpen && (
-        <div className="origin-top-right absolute right-10 mt-1 w-24 rounded-md shadow-lg bg-red-500 text-white ring-1 ring-black ring-opacity-5">
+        <div className="origin-top-right absolute right-10 mt-1 w-24 rounded-md shadow-lg bg-red-500 text-black ring-1 ring-black ring-opacity-5">
           <div className="py-1" role="none">
             <button
               className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
