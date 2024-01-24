@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setMessages } from '@/redux/appSlice'; 
 
 
-const details = () => {
+const Details = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -114,4 +114,4 @@ const details = () => {
   );
 };
 
-export default details;
+export default Details;
