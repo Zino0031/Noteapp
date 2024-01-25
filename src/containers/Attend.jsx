@@ -13,10 +13,10 @@ const Attend = () => {
         </div>
         <div className='flex flex-col justify-center items-center bottom-0'>
           <Link href="/join">
-            <div className='bg-[#01A1E4] border-[#01A1E4] border-2 text-white py-3 px-40 mb-4 rounded-md  '>{t('join')}</div>
+            <div className='bg-[#01A1E4] border-[#01A1E4] border-2 text-white py-3 px-20 mb-4 rounded-md  '>{t('join')}</div>
           </Link>
           <Link href="/host">
-            <div className='border-[#01A1E4] border-2 text-[#01A1E4] py-3 px-40 rounded-md'>{t('host')}</div>
+            <div className='border-[#01A1E4] border-2 text-[#01A1E4] py-3 px-20 rounded-md'>{t('host')}</div>
           </Link>
         </div>
       </div>
