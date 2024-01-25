@@ -14,7 +14,7 @@ const HostYourSession = () => {
   });
   
 
-  const sessions = useSelector((state) => state.sessions);
+  const urSessions = useSelector((state) => state.urSessions);
   const handleHostSession = async () => {
       try {
           const resultAction = await dispatch(HosturSession(sessionInfo));
@@ -43,12 +43,14 @@ const HostYourSession = () => {
             onChange={(e) => setSessionInfo({ ...sessionInfo, code: e.target.value })}
             className="block w-60 mt-2 p-2 border rounded-md"
           >
-            <option value="">{t('selectSession')}</option>
-            {sessions.map((session) => (
-              <option key={session.sessionId} value={session.code}>
-                {session.name}
-              </option>
-            ))}
+        <option value="">{t('selectSession')}</option>
+{
+  [...new Map(urSessions.map(session => [session.sessionId, session])).values()].map((session) => (
+    <option key={session.sessionId} value={session.code}>
+      {session.name}
+    </option>
+  ))
+}
           </select>
         </label>
 

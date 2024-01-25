@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk,createAction } from '@reduxjs/toolkit';
 import { collection, query, where, getDocs,serverTimestamp,addDoc } from 'firebase/firestore'; 
 import { getAuth } from 'firebase/auth';
 
@@ -6,21 +6,26 @@ import { db } from '@/utils/firebase';
 
 const currentUser = getAuth().currentUser;
 
-export const createSession = createAsyncThunk('app/createSession', async (sessionData) => {
+export const createSession = createAsyncThunk('app/createSession', async (sessionData,thunkAPI) => {
   try {
-
+    const { dispatch } = thunkAPI;
     const sessionsCollection = collection(db, 'sessions');
     const sessionRef = await addDoc(sessionsCollection, sessionData);
 
     const participantDocRef = await addDoc(collection(sessionRef, 'participants'), {
   
     });
-
+    const newSession = { sessionId: sessionRef.id, participantId: participantDocRef.id, ...sessionData };
+    dispatch(addUrSession(newSession));
     return { sessionId: sessionRef.id, participantId: participantDocRef.id, ...sessionData };
   } catch (error) {
     throw error;
   }
 });
+
+export const addUrSession = createAction('app/addUrSession', (newSession) => ({
+  payload: newSession,
+}));
 
 
   export const HostSession = createAsyncThunk('app/HostSession', async ({ code, pin },thunkAPI) => {
@@ -157,6 +162,7 @@ export const createSession = createAsyncThunk('app/createSession', async (sessio
 
 const initialState = {
     sessions: [],
+    urSessions: [],
     messages: [],
     counters: {},
     loading: false,
@@ -231,6 +237,9 @@ const appSlice = createSlice({
    .addCase(sendMessage.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      });
+      builder.addCase(addUrSession, (state, action) => {
+        state.urSessions.push(action.payload);
       });
   }
 });
