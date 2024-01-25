@@ -184,6 +184,7 @@ const appSlice = createSlice({
        setGuestId: (state, action) => {
       state.guestId = action.payload;
     },
+
   },
   extraReducers: (builder) => {
     builder
@@ -239,7 +240,7 @@ const appSlice = createSlice({
         state.error = action.error.message;
       });
       builder.addCase(addUrSession, (state, action) => {
-        state.urSessions.push(action.payload);
+        state.urSessions = [...state.urSessions, action.payload];
       });
   }
 });

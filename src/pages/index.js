@@ -6,19 +6,19 @@ import LanguageSwitcher from '@/utils/LanguageSwitcher'
 const Index = () => {
   const { t } = useTranslation('home');
   return (
-    <div className='min-h-screen flex flex-col md:flex-row items-center justify-center'>
-      <div className='flex flex-col justify-center items-center absolute bottom-0 mb-10 md:mb-0 md:relative md:w-1/2 md:px-8'>
-        <div className='hidden md:block -mt-20 mb-10 text-center font-semibold'>
+    <div className='min-h-screen  flex flex-col md:flex-row items-center justify-center'>
+      <div className='flex flex-col   justify-center items-center absolute bottom-0 mb-2 md:mb-0 md:relative md:w-1/2 md:px-8'>
+        <div className='hidden md:block  -mt-20 mb-10 text-center font-semibold'>
         {t('notelineDescription')}      </div>
         <Link href="/attend">
-          <div className='bg-[#01A1E4] text-white py-4 px-40 mb-4 rounded-md  '>{t('joinAsGuest')}</div>
+          <div className='bg-[#01A1E4] text-white py-4 px-28 mb-4 rounded-md  '>{t('joinAsGuest')}</div>
         </Link>
-        <div className='flex flex-row gap-2'>
+        <div className='flex  flex-row gap-2'>
           <Link href="">
-            <div className='border-[#01A1E4] border-2 text-[#01A1E4] py-3 px-20 rounded-md'>{t('login')}</div>
+            <div className='border-[#01A1E4] border-2 text-[#01A1E4] py-3 px-14 rounded-md'>{t('login')}</div>
           </Link>
           <Link href="">
-            <div className='bg-[#01A1E4] border-[#01A1E4] border-2 text-white py-3 px-20 rounded-md'>{t('signUp')}</div>
+            <div className='bg-[#01A1E4] border-[#01A1E4] border-2 text-white py-3 px-14 rounded-md'>{t('signUp')}</div>
           </Link>
         </div>
       </div>

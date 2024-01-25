@@ -82,7 +82,8 @@ const Details = () => {
       <FaUsers /> 
       </div>
       {connectedUsers} Users Participated </p>
- 
+ <div className='flex flex-col justify-center items-center'>
+
     <table className="table-auto mt-2 ">
           <thead>
             <tr className='bg-gray-400 '>
@@ -101,12 +102,13 @@ const Details = () => {
             ))}
           </tbody>
         </table>
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-8">
+        <div className=" bottom-0 mt-3 mb-2">
     <button
       className="bg-[#01A1E4] hover:border-[#01A1E4] text-white px-20 py-3 rounded-md"
     >
       More Details 
     </button>
+ </div>
   </div>
             </div> 
       </div>

@@ -43,13 +43,21 @@ const HostYourSession = () => {
             onChange={(e) => setSessionInfo({ ...sessionInfo, code: e.target.value })}
             className="block w-60 mt-2 p-2 border rounded-md"
           >
-        <option value="">{t('selectSession')}</option>
-{
-  [...new Map(urSessions.map(session => [session.sessionId, session])).values()].map((session) => (
-    <option key={session.sessionId} value={session.code}>
-      {session.name}
-    </option>
-  ))
+        {
+  urSessions && urSessions.length > 0 ? (
+    <>
+      <option value="">{t('selectSession')}</option>
+      {
+        [...new Map(urSessions.map(session => [session.sessionId, session])).values()].map((session) => (
+          <option key={session.sessionId} value={session.code}>
+            {session.name}
+          </option>
+        ))
+      }
+    </>
+  ) : (
+    <option value="">{t('noSessionsAvailable')}</option>
+  )
 }
           </select>
         </label>
